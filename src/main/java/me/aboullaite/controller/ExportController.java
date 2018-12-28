@@ -2,10 +2,11 @@ package me.aboullaite.controller;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import me.aboullaite.model.CardOrderMake;
-import me.aboullaite.model.CardProductInfo;
-import me.aboullaite.model.User;
-import me.aboullaite.model.cardorder_make;
+//import com.taobao.api.DefaultTaobaoClient;
+//import com.taobao.api.TaobaoClient;
+//import com.taobao.api.request.AlibabaFundplatformCardordersInfoQueryRequest;
+//import com.taobao.api.response.AlibabaFundplatformCardordersInfoQueryResponse;
+import me.aboullaite.model.*;
 import me.aboullaite.service.UserService;
 import me.aboullaite.view.ExcelView;
 import org.apache.poi.hssf.util.HSSFColor;
@@ -34,6 +35,14 @@ public class ExportController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private ExcelView excelView;
+
+    private final String appkey = "25375662";  //三宇数码科技
+    private final String appSecret = "1f579736d67afc84252d3d9b2e48834e"; //三宇数码科技
+
+    private final String alibaba_fundplatform_cardorder_info_query_api_url = "";
+
     /**
      * Handle request to download an Excel document
      */
@@ -47,7 +56,7 @@ public class ExportController {
     @RequestMapping(value = "/getcardorder", method = RequestMethod.POST)
     @ResponseBody
     public String GetCardOrderMakeInfo(@RequestBody cardorder_make cardorderMake, HttpServletResponse response) {
-        JSONArray jsonArray = new JSONArray();
+        //  JSONArray jsonArray = new JSONArray();
         JSONObject jsonObject1 = new JSONObject();
         JSONObject jsoNbject = new JSONObject();
         List<CardProductInfo> listCardProductInfo = new ArrayList<>();
@@ -67,7 +76,7 @@ public class ExportController {
             log.info("=============数据保存到 CardProductInf 开始=============");
 
             CardProductInfo cardProductInfo = null;
-            Long count = cardorderMake.getCard_product_infos().get(1).getCount();
+            //   Long count = cardorderMake.getCard_product_infos().get(1).getCount();
             if (cardorderMake.getCard_product_infos() != null && cardorderMake.getCard_product_infos().size() > 0) {
                 for (int i = 0; i < cardorderMake.getCard_product_infos().size(); i++) {
                     cardProductInfo = new CardProductInfo();
@@ -81,8 +90,8 @@ public class ExportController {
                 }
             }
 
-            ExcelView excelView=new ExcelView();
-           excelView.buildExcelDocument(cardOrderMake,listCardProductInfo,response);
+          //  ExcelView excelView = new ExcelView();
+            excelView.buildExcelDocument(cardOrderMake, listCardProductInfo, null, response, "卡产品信息", 1);
 
             //   cardProductInfoRepository.saveAll(listCardProductInfo);
             log.info("=============数据保存到 CardProductInf 结束=============");
@@ -103,6 +112,44 @@ public class ExportController {
         log.info("=============方法结束=============");
         log.info(jsonObject1.toJSONString());
         return jsonObject1.toJSONString();
+    }
+
+
+    @RequestMapping(value = "/getcardtemplatenew", method = RequestMethod.POST)
+    @ResponseBody
+    public String getcardtemplatenew(@RequestBody card_template cardTemplate, HttpServletResponse response)throws Exception  {
+
+        JSONObject jsoNbject = new JSONObject();
+
+
+
+        excelView.buildExcelDocument(null, null, cardTemplate, response, "卡模板信息", 2);
+
+        jsoNbject.put("resultMessage", "接口服务");
+        jsoNbject.put("resultCode", "N0001");
+        jsoNbject.put("success", "true");
+
+        log.info("=============方法结束=============");
+        log.info(jsoNbject.toJSONString());
+        return jsoNbject.toJSONString();
+    }
+
+
+    @RequestMapping(value = "/getcardorderquery", method = RequestMethod.POST)
+    @ResponseBody
+    public String GetCardOrders(Model model) {
+
+ //       TaobaoClient client = new DefaultTaobaoClient("", appkey, appSecret);
+//        AlibabaFundplatformCardordersInfoQueryRequest req = new AlibabaFundplatformCardordersInfoQueryRequest();
+//        CardMakingInfoQueryRequest obj1 = new CardMakingInfoQueryRequest();
+//        obj1.setPageSize(500L);
+//        obj1.setCurrentPage(1L);
+//        obj1.setSignture("test");
+//        obj1.setCardOrderId(1001L);
+//        req.setParameters(obj1);
+        //    AlibabaFundplatformCardordersInfoQueryResponse rsp = client.execute(req);
+        //    System.out.println(rsp.getBody());
+        return "";
     }
 
 }
