@@ -1,10 +1,7 @@
 package me.aboullaite.view;
 
-import me.aboullaite.controller.ExportController;
-import me.aboullaite.model.CardOrderMake;
-import me.aboullaite.model.CardProductInfo;
-import me.aboullaite.model.User;
-import me.aboullaite.model.card_template;
+import me.aboullaite.controller.IndexController;
+import me.aboullaite.model.*;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -13,11 +10,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.view.document.AbstractXlsView;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -25,7 +21,7 @@ import java.util.Map;
 
 @Service
 public class ExcelView extends AbstractXlsView {
-    private static Logger log = LoggerFactory.getLogger(ExportController.class);
+    private static Logger log = LoggerFactory.getLogger(IndexController.class);
 
     @Override
     protected void buildExcelDocument(Map<String, Object> model,
@@ -103,7 +99,6 @@ public class ExcelView extends AbstractXlsView {
         }
 
         OutputStream outputStream = new FileOutputStream(file);
-        ;
         workbook.write(outputStream);
     }
 
@@ -133,20 +128,68 @@ public class ExcelView extends AbstractXlsView {
             getCardTemplate(workbook, cardTemplate);
         }
 
-        //将数据保存到本机
-        SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("yyyyMMddHHmm");
-        String fileName =excelfilename+ simpleDateFormat2.format(new Date()) + ".xls";
+        //Save Excel File to  Server
+        excelFileSave(workbook, excelfilename);
 
-        File file = new File("D:/data/TELHM/" + fileName);
-        if (!file.exists()) {
-            file.createNewFile();
+    }
+
+    public void buildExcelDocumentCardMakeInfo(List<card_making_info> card_making_infoList,
+                                               HttpServletResponse response,
+                                               String excelfilename) throws Exception {
+        // change the file name
+        response.setHeader("Content-Disposition", "attachment; filename=\"my-xls-file.xls\"");
+        response.setContentType("pplication/vnd.ms-excel");
+
+        // create excel xls sheet
+        XSSFWorkbook workbook = new XSSFWorkbook();
+
+
+        Sheet sheet = workbook.createSheet("卡产品列表");
+        sheet.setDefaultColumnWidth(30);
+
+        // create style for header cells
+        CellStyle style = setSheetStyle(workbook);
+
+        // create header row
+        Row header = sheet.createRow(0);
+        header.createCell(0).setCellValue("卡编号");
+        header.getCell(0).setCellStyle(style);
+        header.createCell(1).setCellValue("卡密码");
+        header.getCell(1).setCellStyle(style);
+        header.createCell(2).setCellValue("二维码链接");
+        header.getCell(2).setCellStyle(style);
+        header.createCell(3).setCellValue("短连接二维码");
+        header.getCell(3).setCellStyle(style);
+        header.createCell(4).setCellValue("卡商品编码");
+        header.getCell(4).setCellStyle(style);
+        header.createCell(5).setCellValue("卡状态");
+        header.getCell(5).setCellStyle(style);
+
+        int rowCount = 1;
+
+
+        if (card_making_infoList != null && card_making_infoList.size() > 0) {
+
+            for (card_making_info card : card_making_infoList) {
+                Row userRow = sheet.createRow(rowCount++);
+                userRow.createCell(0).setCellValue(card.getCardNo());
+                userRow.createCell(1).setCellValue(card.getCardPassword());
+                userRow.createCell(2).setCellValue(card.getQrCode());
+                userRow.createCell(3).setCellValue(card.getShortQrCode());
+                userRow.createCell(4).setCellValue(card.getTemplateNo());
+                userRow.createCell(5).setCellValue(card.getStatus());
+
+            }
+
         }
-        log.info("========文件保存路径=============");
-        log.info(file.getPath());
 
-        OutputStream outputStream = new FileOutputStream(file);
-        ;
-        workbook.write(outputStream);
+        //Save Excel File to  Server
+      excelFileSave(workbook, excelfilename);
+
+      //  renderWorkbook(workbook,response);
+        //网页流输出 另存
+
+       // renderWorkbook(workbook,response);
     }
 
     private void getCardTemplate(XSSFWorkbook workbook,
@@ -304,6 +347,36 @@ public class ExcelView extends AbstractXlsView {
         font.setColor(HSSFColor.WHITE.index);
         style.setFont(font);
         return style;
+    }
+
+    private void excelFileSave(XSSFWorkbook workbook, String excelfilename) throws Exception {
+
+        //将数据保存到本机
+        SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("yyyyMMddHHmm");
+        String fileName = excelfilename + simpleDateFormat2.format(new Date()) + ".xls";
+
+        File file = new File("D:/data/TELHM/" + fileName);
+        if (!file.exists()) {
+            file.createNewFile();
+        }
+        log.info("========文件保存路径=============");
+        log.info(file.getPath());
+
+        OutputStream outputStream = new FileOutputStream(file);
+        workbook.write(outputStream);
+
+        if (workbook instanceof Closeable) {
+            workbook.close();
+        }
+    }
+
+    protected void renderWorkbook(Workbook workbook, HttpServletResponse response) throws IOException {
+        ServletOutputStream out = response.getOutputStream();
+        workbook.write(out);
+        if (workbook instanceof Closeable) {
+            workbook.close();
+        }
+
     }
 
 }

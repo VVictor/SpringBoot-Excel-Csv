@@ -59,7 +59,7 @@ public abstract class AbstractPdfView extends AbstractView {
      * @param request in case we need locale etc. Shouldn't look at attributes.
      * @throws DocumentException if thrown during writer preparation
      */
-    protected void prepareWriter(Map<String, Object> model, PdfWriter writer, HttpServletRequest request) throws DocumentException {
+    protected void prepareWriter(Map<String, Object> model, PdfWriter writer, HttpServletRequest request) {
         writer.setViewerPreferences(getViewerPreferences());
     }
 

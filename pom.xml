@@ -5,7 +5,7 @@
 
 	<groupId>me.aboullaite</groupId>
 	<artifactId>excel-view</artifactId>
-	<version>0.2.1-SNAPSHOT</version>
+	<version>0.3.3-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>Spring boot Excel view</name>
@@ -65,6 +65,18 @@
 			<artifactId>fastjson</artifactId>
 			<version>1.2.54</version>
 		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.7.25</version>
+		</dependency>
+		<dependency>
+			<groupId>com.mas</groupId>
+			<artifactId>mas-sdk</artifactId>
+			<version>1.0-SNAPSHOT</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/src/main/resources/lib/taobao-sdk-java-auto_1545009232613-20181217.jar</systemPath>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -72,17 +84,28 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<includeSystemScope>true</includeSystemScope>
+				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.3</version>
+				<version>3.5.1</version>
 				<configuration>
 					<source>1.8</source>
 					<target>1.8</target>
+					<encoding>UTF-8</encoding>
+					<!--<compilerArguments>
+						&lt;!&ndash; 打包本地jar包 &ndash;&gt;
+						<extdirs>${project.basedir}/lib</extdirs>
+					</compilerArguments>-->
 				</configuration>
 			</plugin>
+
 		</plugins>
+
+
 	</build>
 
 
