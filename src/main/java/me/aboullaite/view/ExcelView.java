@@ -206,7 +206,7 @@ public class ExcelView extends AbstractXlsView {
         header.getCell(0).setCellStyle(style);
         header.createCell(1).setCellValue("卡名称");
         header.getCell(1).setCellStyle(style);
-        header.createCell(2).setCellValue("卡面额");
+        header.createCell(2).setCellValue("卡面额(分)");
         header.getCell(2).setCellStyle(style);
         header.createCell(3).setCellValue("卡外观图片地址");
         header.getCell(3).setCellStyle(style);
@@ -248,7 +248,7 @@ public class ExcelView extends AbstractXlsView {
         header.getCell(2).setCellStyle(style);
         header.createCell(3).setCellValue("当前卡模板制卡数量");
         header.getCell(3).setCellStyle(style);
-        header.createCell(4).setCellValue("卡面额");
+        header.createCell(4).setCellValue("卡面额(分)");
         header.getCell(4).setCellStyle(style);
         header.createCell(5).setCellValue("卡名称");
         header.getCell(5).setCellStyle(style);

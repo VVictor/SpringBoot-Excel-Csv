@@ -91,14 +91,14 @@
 
 
                     <div class="form-group">
-                        <label for="exampleInputPage">页数</label>
-                        <input type="number" value="500" class="form-control" id="exampleInputPage" placeholder="页数">
+                        <label for="exampleInputCount">制卡数量</label>
+                        <input type="number" class="form-control" id="exampleInputCount" placeholder="页数">
                     </div>
 
-                    <div class="form-group">
-                        <label for="exampleInputCurrentPage">当前页数</label>
-                        <input type="number" class="form-control" id="exampleInputCurrentPage" placeholder="当前页数">
-                    </div>
+                    <!--<div class="form-group">-->
+                        <!--<label for="exampleInputCurrentPage">当前页数</label>-->
+                        <!--<input type="number" class="form-control" id="exampleInputCurrentPage" placeholder="当前页数">-->
+                    <!--</div>-->
 
                     <!--<div id="alert" class="alert alert-success alert-dismissible" role="alert">-->
                         <!--<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span-->
@@ -193,10 +193,10 @@
         //获取卡列表表格 方法
         $("#send").click(function () {
             var card_order_id = $('#exampleInputAmount').val();
-            var page_size = $('#exampleInputPage').val();
-            var current_page = $('#exampleInputCurrentPage').val();
-            if (card_order_id != null && card_order_id != '' && page_size != null && page_size != '' && current_page != null && current_page != '') {
-                var data = {"card_order_id": card_order_id, "page_size": page_size, "current_page": current_page};
+            var count = $('#exampleInputCount').val();
+          //  var current_page = $('#exampleInputCurrentPage').val();
+            if (card_order_id != null && card_order_id != '' && count != null && count != '' ) {
+                var data = {"card_order_id": card_order_id, "count": count};
                 $.ajax({
                     type: "POST",
                     url: "/getcardorderquery",
