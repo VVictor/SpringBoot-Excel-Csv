@@ -149,12 +149,10 @@ public class IndexController {
         Integer count = Integer.parseInt(jsonObject.get("count").toString()) / 500 + 1;
 
 
-
-
         AlibabaFundplatformCardordersInfoQueryResponse rsp = null;
         for (Integer i = 1; i <= count; i++) {
 
-            obj1=new AlibabaFundplatformCardordersInfoQueryRequest.CardMakingInfoQueryRequest();
+            obj1 = new AlibabaFundplatformCardordersInfoQueryRequest.CardMakingInfoQueryRequest();
             obj1.setPageSize(Long.parseLong(pageSize.toString()));
             obj1.setCurrentPage(Long.parseLong(i.toString()));
             obj1.setSignture("test");
@@ -162,14 +160,16 @@ public class IndexController {
             req.setParameters(obj1);
 
             rsp = client.execute(req);
-            if (rsp.getResult().getSuccess()) {
+            if (rsp.getResult() != null && rsp.getResult().getSuccess()) {
                 List<card_making_info> getCardMakingInfoLis = this.getCardMakingInfoList(rsp.getResult().getCardMakingInfos());
-                excelView.buildExcelDocumentCardMakeInfo(getCardMakingInfoLis, response, "第"+i.toString()+"卡列表");
+                excelView.buildExcelDocumentCardMakeInfo(getCardMakingInfoLis, response, "第" + i.toString() + "卡列表");
                 log.info(rsp.getResult().toString());
                 System.out.println(rsp.getResult());
             }
         }
-        return rsp.getResult().getSuccess().toString();
+
+
+        return "true";
     }
 
     private List<card_making_info> getCardMakingInfoList(List<String> CardMakingInfos) {
