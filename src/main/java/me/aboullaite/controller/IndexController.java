@@ -89,7 +89,7 @@ public class IndexController {
             }
 
             //  ExcelView excelView = new ExcelView();
-            excelView.buildExcelDocument(cardOrderMake, listCardProductInfo, null, response, "卡产品信息", 1);
+            excelView.buildExcelDocument(cardOrderMake, listCardProductInfo, null, response, "CardInfo", 1);
 
             //   cardProductInfoRepository.saveAll(listCardProductInfo);
             log.info("=============数据保存到 CardProductInf 结束=============");
@@ -120,7 +120,7 @@ public class IndexController {
         JSONObject jsoNbject = new JSONObject();
 
 
-        excelView.buildExcelDocument(null, null, cardTemplate, response, "卡模板信息", 2);
+        excelView.buildExcelDocument(null, null, cardTemplate, response, "Template", 2);
 
         jsoNbject.put("resultMessage", "接口服务");
         jsoNbject.put("resultCode", "N0001");
@@ -136,7 +136,7 @@ public class IndexController {
     @ResponseBody
     public String GetCardOrders(String page_size, @RequestBody JSONObject jsonObject, HttpServletResponse response) throws Exception {
 
-        TaobaoClient client = new DefaultTaobaoClient(alibaba_fundplatform_cardorder_info_query_api_url_test, appkey, sandboxappsecret);
+        TaobaoClient client = new DefaultTaobaoClient(alibaba_fundplatform_cardorder_info_query_api_url_alph, appkey,appSecret);
         AlibabaFundplatformCardordersInfoQueryRequest req = new AlibabaFundplatformCardordersInfoQueryRequest();
         AlibabaFundplatformCardordersInfoQueryRequest.CardMakingInfoQueryRequest obj1 = null;
 
@@ -162,7 +162,7 @@ public class IndexController {
             rsp = client.execute(req);
             if (rsp.getResult() != null && rsp.getResult().getSuccess()) {
                 List<card_making_info> getCardMakingInfoLis = this.getCardMakingInfoList(rsp.getResult().getCardMakingInfos());
-                excelView.buildExcelDocumentCardMakeInfo(getCardMakingInfoLis, response, "第" + i.toString() + "卡列表");
+                excelView.buildExcelDocumentCardMakeInfo(getCardMakingInfoLis, response,  i.toString() + "CardList");
                 log.info(rsp.getResult().toString());
                 System.out.println(rsp.getResult());
             }
@@ -197,7 +197,7 @@ public class IndexController {
     @ResponseBody
     public String MakeCardOrderStatusFinish(@RequestBody JSONObject jsonObject) throws Exception {
 
-        TaobaoClient client = new DefaultTaobaoClient(alibaba_fundplatform_cardorder_info_query_api_url_test, appkey, sandboxappsecret);
+        TaobaoClient client = new DefaultTaobaoClient(alibaba_fundplatform_cardorder_info_query_api_url_alph, appkey, appSecret);
         AlibabaFundplatformCardordersStatusMakeFinishRequest req = new AlibabaFundplatformCardordersStatusMakeFinishRequest();
         req.setCardOrderId(Long.parseLong(jsonObject.get("card_order_id").toString()));
         AlibabaFundplatformCardordersStatusMakeFinishResponse rsp = client.execute(req);
@@ -210,7 +210,7 @@ public class IndexController {
     @RequestMapping(value = "/cardordersStatusSended", method = RequestMethod.POST)
     @ResponseBody
     public String CardOrderStatusSended(@RequestBody JSONObject jsonObject) throws Exception {
-        TaobaoClient client = new DefaultTaobaoClient(alibaba_fundplatform_cardorder_info_query_api_url_test, appkey, sandboxappsecret);
+        TaobaoClient client = new DefaultTaobaoClient(alibaba_fundplatform_cardorder_info_query_api_url_alph, appkey, appSecret);
         AlibabaFundplatformCardordersStatusSendedRequest req = new AlibabaFundplatformCardordersStatusSendedRequest();
         req.setCardOrderId(Long.parseLong(jsonObject.get("card_order_id").toString()));
         req.setLogisticsOrderId(jsonObject.get("logistics_order_id").toString());
