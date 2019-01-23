@@ -33,7 +33,7 @@ public class IndexController {
     @Autowired
     private ExcelView excelView;
 
-    private final String appkey = "1025375662";  //三宇数码科技
+    private final String appkey = "25375662";  //三宇数码科技 ，测试环境前面需要加10
     private final String appSecret = "1f579736d67afc84252d3d9b2e48834e"; //三宇数码科技
     private final String sandboxappsecret = "sandbox6d67afc84252d3d9b2e48834e"; //沙箱AppSecret
 
