@@ -352,7 +352,7 @@ public class ExcelView extends AbstractXlsView {
     private void excelFileSave(XSSFWorkbook workbook, String excelfilename) throws Exception {
 
         //将数据保存到本机
-        SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("yyyyMMddHHmm");
+        SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("yyyyMMddHHmmss");
         String fileName = excelfilename + simpleDateFormat2.format(new Date()) + ".xls";
 
         File file = new File("D:/data/TELHM/" + fileName);
