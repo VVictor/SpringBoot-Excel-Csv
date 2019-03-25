@@ -18,6 +18,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 @Service
 public class ExcelView extends AbstractXlsView {
@@ -184,12 +185,12 @@ public class ExcelView extends AbstractXlsView {
         }
 
         //Save Excel File to  Server
-      excelFileSave(workbook, excelfilename);
+        excelFileSave(workbook, excelfilename);
 
-      //  renderWorkbook(workbook,response);
+        //  renderWorkbook(workbook,response);
         //网页流输出 另存
 
-       // renderWorkbook(workbook,response);
+        // renderWorkbook(workbook,response);
     }
 
     private void getCardTemplate(XSSFWorkbook workbook,
@@ -352,8 +353,9 @@ public class ExcelView extends AbstractXlsView {
     private void excelFileSave(XSSFWorkbook workbook, String excelfilename) throws Exception {
 
         //将数据保存到本机
-        SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("yyyyMMddHHmmss");
+        SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("yyyyMMddHHmmssSS");
         String fileName = excelfilename + simpleDateFormat2.format(new Date()) + ".xls";
+       // Random random = new Random();
 
         File file = new File("D:/data/TELHM/" + fileName);
         if (!file.exists()) {

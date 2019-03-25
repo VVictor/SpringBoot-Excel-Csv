@@ -86,10 +86,11 @@ public class IndexController {
                     cardProductInfo.setTemplate_no(cardorderMake.getCard_product_infos().get(i).getTemplate_no());
                     listCardProductInfo.add(cardProductInfo);
                 }
+                //  ExcelView excelView = new ExcelView();
+                excelView.buildExcelDocument(cardOrderMake, listCardProductInfo, null, response, cardorderMake.getCard_order_id()+"_"+"CardInfo", 1);
             }
 
-            //  ExcelView excelView = new ExcelView();
-            excelView.buildExcelDocument(cardOrderMake, listCardProductInfo, null, response, "CardInfo", 1);
+
 
             //   cardProductInfoRepository.saveAll(listCardProductInfo);
             log.info("=============数据保存到 CardProductInf 结束=============");
@@ -136,7 +137,7 @@ public class IndexController {
     @ResponseBody
     public String GetCardOrders(String page_size, @RequestBody JSONObject jsonObject, HttpServletResponse response) throws Exception {
 
-        TaobaoClient client = new DefaultTaobaoClient(alibaba_fundplatform_cardorder_info_query_api_url_alph, appkey,appSecret);
+        TaobaoClient client = new DefaultTaobaoClient(alibaba_fundplatform_cardorder_info_query_api_url_alph, appkey, appSecret);
         AlibabaFundplatformCardordersInfoQueryRequest req = new AlibabaFundplatformCardordersInfoQueryRequest();
         AlibabaFundplatformCardordersInfoQueryRequest.CardMakingInfoQueryRequest obj1 = null;
 
@@ -162,7 +163,7 @@ public class IndexController {
             rsp = client.execute(req);
             if (rsp.getResult() != null && rsp.getResult().getSuccess()) {
                 List<card_making_info> getCardMakingInfoLis = this.getCardMakingInfoList(rsp.getResult().getCardMakingInfos());
-                excelView.buildExcelDocumentCardMakeInfo(getCardMakingInfoLis, response,  i.toString() + "CardList");
+                excelView.buildExcelDocumentCardMakeInfo(getCardMakingInfoLis, response, jsonObject.get("card_order_id").toString()+"_" + i.toString() + "CardList");
                 log.info(rsp.getResult().toString());
                 System.out.println(rsp.getResult());
             }
